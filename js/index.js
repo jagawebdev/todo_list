@@ -62,3 +62,13 @@ var todoList = {
         this.displayTodos();
      }
 };
+
+var displayButton = document.getElementById("displayButton");
+displayButton.addEventListener("click", function() {
+    todoList.displayTodos();
+});
+
+var toggleAllButton = document.getElementById("toggleAllButton");
+toggleAllButton.addEventListener("click", function() {
+   todoList.toggleAll(); 
+});
