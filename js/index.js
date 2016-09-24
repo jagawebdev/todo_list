@@ -24,21 +24,26 @@ var todoList = {
     toggleAll: function(){
          var totalTodos = this.todos.length;
          var completedTodos = 0;
+         var i = 0;
+         var todoCompleted = false;
+
+        //Get number of completed todos
+        this.todos.forEach(function(todo){
+            if(todo.completed === true){
+                 completedTodos++;
+            }
+        });
         
-            for(var i = 0; i < totalTodos; i++){
-                if(this.todos[i].completed === true){
-                     completedTodos++;
-                }
-            }
-               
+        // Case 1: If evertyhing's true, make everything false
         if(completedTodos === totalTodos){
-            for(var i = 0; i < totalTodos; i++){
-                this.todos[i].completed = false;
-            }
+            this.todos.forEach(function(todo) {
+                todo.completed = false;
+            });
+        //Case2: Otherwise, make everything true
         }else{
-            for(var i = 0; i < totalTodos; i++){
-                this.todos[i].completed = true;
-            }
+            this.todos.forEach(function(todo){
+               todo.completed = true; 
+            });
         }
      }
 };
@@ -67,10 +72,8 @@ var handlers = {
         view.displayTodos();
     },
     
-    deleteTodo: function(){
-        var deleteTodoPositionInput = document.getElementById("deleteTodoPositionInput");
-        todoList.deleteTodo(deleteTodoPositionInput.valueAsNumber);
-        deleteTodoPositionInput.value = "";
+    deleteTodo: function(index){ 
+        todoList.deleteTodo(index);
         view.displayTodos();
     },
     
@@ -85,10 +88,10 @@ var view = {
         var todosUl = document.getElementById("todoUl");
         todosUl.innerHTML = '';
         
-        for(var i = 0; i < todoList.todos.length; i++ ){
+        todoList.todos.forEach(function(todo, index){
             var todoLi = document.createElement("li");
             var todoTextWithCompletion = "";
-            var todo = todoList.todos[i];
+            //var todo = todoList.todos[i];
             
             if(todo.completed === true){
                 todoTextWithCompletion = "(x) " + todo.todoText;
@@ -96,12 +99,11 @@ var view = {
                     todoTextWithCompletion = "( ) " + todo.todoText;
             } 
             
-            //todoLi.setAttribute('id', i);
-            todoLi.id = i;
+            todoLi.id = index; //todoLi.setAttribute('id', i);
             todoLi.textContent = todoTextWithCompletion;
-            todoLi.appendChild(this.createDeleteButton());
+            todoLi.appendChild(view.createDeleteButton());
             todosUl.appendChild(todoLi);
-        }
+        });
     },
     
     createDeleteButton: function(){
@@ -109,5 +111,20 @@ var view = {
         deleteButton.innerHTML = "Delete";
         deleteButton.className = "deleteButton";
         return deleteButton;
+    },
+    
+    setUpEventListeners: function(){
+        var todosUl = document.getElementById("todoUl");
+        todosUl.addEventListener("click", function(event) {
+            //Get the element that was clicked on.
+            var elementClicked = event.target;
+            // Check if element clicked is a delete button
+            if (elementClicked.className === "deleteButton"){
+                //Run handleres.deleteTodo(index).
+                handlers.deleteTodo(parseInt(elementClicked.parentNode.id));
+            }
+        });
     }
 };
+
+view.setUpEventListeners();
