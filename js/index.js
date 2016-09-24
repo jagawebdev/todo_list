@@ -1,21 +1,6 @@
 var todoList = {
     todos: [],
-    
-    // displayTodos: function(){
-    //     if(this.todos.length === 0){
-    //         console.log("empty");
-    //     }else{
-    //         console.log("My Todos:");
-    //         for(var i = 0; i < this.todos.length; i++ ){
-    //             if(this.todos[i].completed === true){
-    //                 console.log("(x)", this.todos[i].todoText);
-    //             }else{
-    //                 console.log("( )", this.todos[i].todoText);
-    //             } 
-    //         }
-    //     }
-    // },
-    
+   
     addTodo: function(todoText){
         this.todos.push({
             todoText: todoText,
@@ -110,9 +95,19 @@ var view = {
             }else{
                     todoTextWithCompletion = "( ) " + todo.todoText;
             } 
-                
-            todoLi.textContent = todoTextWithCompletion;    
+            
+            //todoLi.setAttribute('id', i);
+            todoLi.id = i;
+            todoLi.textContent = todoTextWithCompletion;
+            todoLi.appendChild(this.createDeleteButton());
             todosUl.appendChild(todoLi);
         }
+    },
+    
+    createDeleteButton: function(){
+        var deleteButton = document.createElement("button");
+        deleteButton.innerHTML = "Delete";
+        deleteButton.className = "deleteButton";
+        return deleteButton;
     }
 };
