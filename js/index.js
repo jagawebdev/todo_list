@@ -1,3 +1,5 @@
+/*global $*/
+
 var todoList = {
     todos: [],
    
@@ -135,3 +137,14 @@ var view = {
 };
 
 view.setUpEventListeners();
+
+$(document).ready(function(){
+    $('#addTodoTextInput').keypress(function(e){
+                if(e.which == 13){
+                    $(this).blur();  
+                    handlers.addTodo();
+                }
+            });
+            
+
+});
