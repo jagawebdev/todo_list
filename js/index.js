@@ -10,7 +10,7 @@ var todoList = {
         });
     },
     
-    changeTodo: function(index, todoText){
+    changeTodo: function(index,todoText){
         this.todos[index].todoText = todoText;
     },
     
@@ -57,7 +57,7 @@ var handlers = {
     },
     
     changeTodo: function(index, todoText){
-        todoList.changeTodo(index, todoText);
+        todoList.changeTodo(index,todoText);
         view.displayTodos();
     },
     
@@ -84,6 +84,7 @@ var view = {
         
         todoList.todos.forEach(function(todo, index){
             var todoLi = document.createElement("li");
+            todoLi.setAttribute("class", 'todoLi')
             var todoTextWithCompletion = "";
             
             if(todo.completed === true){
@@ -95,8 +96,8 @@ var view = {
             todoLi.id = index;
             todoLi.textContent = todoTextWithCompletion;
             todoLi.appendChild(view.createToggleButton());
-            todoLi.appendChild(view.createChangeButton());
             todoLi.appendChild(view.createDeleteButton());
+            todoLi.appendChild(view.createEditButton());
             todosUl.appendChild(todoLi);
         });
         
@@ -105,57 +106,61 @@ var view = {
     
     createDeleteButton: function(){
         var deleteButton = document.createElement("button");
-        deleteButton.textContent = "Delete";
-        deleteButton.className = "deleteButton";
+        deleteButton.textContent = "";
+        deleteButton.className = "ion-close-round";
         return deleteButton;
     },
     
     createToggleButton: function(){
         var toggleButton = document.createElement("button");
-        toggleButton.textContent = "Toggle";
-        toggleButton.className = "toggleButton";
+        toggleButton.textContent = "";
+        toggleButton.className = "ion-android-checkmark-circle";
         return toggleButton;
     },
     
     createChangeButton: function(){
         var changeButton = document.createElement("button");
-        changeButton.textContent = "Edit";
+        changeButton.textContent = "Done";
         changeButton.className = "changeButton";
         return changeButton;
     },
     
-    createDoneButton: function(){
-        var doneButton = document.createElement("button");
-        doneButton.textContent = "Done";
-        doneButton.className = "doneButton";
-        return doneButton;
+    createEditButton: function(){
+        var editButton = document.createElement("button");
+        editButton.textContent = "";
+        editButton.className = "ion-edit";
+        return editButton;
     },
     
     setUpEventListeners: function(){
         var todosUl = document.getElementById("todoUl");
+        var editInput;
+        var parentContent;
         todosUl.addEventListener("click", function(event) {
             //Get the element that was clicked on.
             var elementClicked = event.target;
             // Check if element clicked is a delete button
-            if (elementClicked.className === "deleteButton"){
+            if (elementClicked.className === "ion-close-round"){
                 //Run handleres.deleteTodo(index).
                 handlers.deleteTodo(parseInt(elementClicked.parentNode.id));
             // Check if element clicked is a toggle button
-            }else if(elementClicked.className === "toggleButton"){
+            }else if(elementClicked.className === "ion-android-checkmark-circle"){
                 //Run handlers.toggleCompleted(index);
                 handlers.toggleCompleted(parseInt(elementClicked.parentNode.id));
-            }else if(elementClicked.className === "changeButton"){
+            }else if(elementClicked.className === "ion-edit"){
                 var parentLi = elementClicked.parentNode;
                 
-                var parentContent = parentLi.textContent;
-                console.log(parentContent);
+                parentContent = parentLi.textContent;
                 
                 parentLi.textContent = '';
-                var editInput = document.createElement("input");
+                editInput = document.createElement("input");
                 editInput.setAttribute("value", parentContent);
-                //parentLi.appendChild(view.createInput(parentContent));
+                editInput.setAttribute("id", "editTodoTextInput")
                 parentLi.appendChild(editInput);
-                parentLi.appendChild(view.createDoneButton());
+                parentLi.appendChild(view.createChangeButton());
+            }else if(elementClicked.className === "changeButton"){
+                //Run handlers.changeTodo(index, newValue);
+                handlers.changeTodo(parseInt(elementClicked.parentNode.id), editInput.value);
             }
         });
     }
@@ -167,7 +172,16 @@ $(document).ready(function(){
     $('#addTodoTextInput').keypress(function(e){
         if(e.which == 13){
             $(this).blur();  
+            $(".addButton").css("opacity", "0");
             handlers.addTodo();
         }
+    });
+    
+    $("#addTodoTextInput").click(function(event){
+        event.stopPropagation();
+        $(".addButton").css("opacity", "1");
+    });
+    $(document).click( function(){
+        $(".addButton").css("opacity", "0");
     });
 });
