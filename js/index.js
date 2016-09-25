@@ -24,8 +24,6 @@ var todoList = {
     toggleAll: function(){
          var totalTodos = this.todos.length;
          var completedTodos = 0;
-         var i = 0;
-         var todoCompleted = false;
 
         //Get number of completed todos
         this.todos.forEach(function(todo){
@@ -56,7 +54,7 @@ var handlers = {
         view.displayTodos();
     },
     
-    changeTodo: function(){
+    changeTodo: function(index, todoText){
         var changeTodoPositionInput = document.getElementById("changeTodoPositionInput");
         var changeTodoTextInput = document.getElementById("changeTodoTextInput");
         todoList.changeTodo(changeTodoPositionInput.valueAsNumber, changeTodoTextInput.value);
@@ -65,10 +63,8 @@ var handlers = {
         view.displayTodos();
     },
     
-    toggleCompleted: function(){
-        var toggleCompletedPositionInput = document.getElementById("toggleCompletedPositionInput");
-        todoList.toggleCompleted(toggleCompletedPositionInput.valueAsNumber);
-        toggleCompletedPositionInput.value = "";
+    toggleCompleted: function(index){
+        todoList.toggleCompleted(index);
         view.displayTodos();
     },
     
@@ -91,7 +87,6 @@ var view = {
         todoList.todos.forEach(function(todo, index){
             var todoLi = document.createElement("li");
             var todoTextWithCompletion = "";
-            //var todo = todoList.todos[i];
             
             if(todo.completed === true){
                 todoTextWithCompletion = "(x) " + todo.todoText;
@@ -101,6 +96,7 @@ var view = {
             
             todoLi.id = index; //todoLi.setAttribute('id', i);
             todoLi.textContent = todoTextWithCompletion;
+            todoLi.appendChild(view.createToggleButton());
             todoLi.appendChild(view.createDeleteButton());
             todosUl.appendChild(todoLi);
         });
@@ -113,6 +109,13 @@ var view = {
         return deleteButton;
     },
     
+    createToggleButton: function(){
+        var toggleButton = document.createElement("button");
+        toggleButton.innerHTML = "toggle";
+        toggleButton.className = "toggleButton";
+        return toggleButton;
+    },
+    
     setUpEventListeners: function(){
         var todosUl = document.getElementById("todoUl");
         todosUl.addEventListener("click", function(event) {
@@ -122,6 +125,10 @@ var view = {
             if (elementClicked.className === "deleteButton"){
                 //Run handleres.deleteTodo(index).
                 handlers.deleteTodo(parseInt(elementClicked.parentNode.id));
+            // Check if element clicked is a change button
+            }else if(elementClicked.className === "toggleButton"){
+                //Run handlers.toggleCompleted(index);
+                handlers.toggleCompleted(parseInt(elementClicked.parentNode.id));
             }
         });
     }
