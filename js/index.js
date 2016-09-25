@@ -88,9 +88,11 @@ var view = {
             var todoTextWithCompletion = "";
             
             if(todo.completed === true){
-                todoTextWithCompletion = "(x) " + todo.todoText;
+                todoTextWithCompletion = todo.todoText;
+                todoLi.style.textDecoration = 'line-through';
+                todoLi.style.color = '#a4a9aa';
             }else{
-                    todoTextWithCompletion = "( ) " + todo.todoText;
+                todoTextWithCompletion = todo.todoText;
             } 
             
             todoLi.id = index;
@@ -114,7 +116,7 @@ var view = {
     createToggleButton: function(){
         var toggleButton = document.createElement("button");
         toggleButton.textContent = "";
-        toggleButton.className = "ion-android-checkmark-circle";
+        toggleButton.className = "ion-android-done";
         return toggleButton;
     },
     
@@ -144,7 +146,7 @@ var view = {
                 //Run handleres.deleteTodo(index).
                 handlers.deleteTodo(parseInt(elementClicked.parentNode.id));
             // Check if element clicked is a toggle button
-            }else if(elementClicked.className === "ion-android-checkmark-circle"){
+            }else if(elementClicked.className === "ion-android-done"){
                 //Run handlers.toggleCompleted(index);
                 handlers.toggleCompleted(parseInt(elementClicked.parentNode.id));
             }else if(elementClicked.className === "ion-edit"){
@@ -183,5 +185,9 @@ $(document).ready(function(){
     });
     $(document).click( function(){
         $(".addButton").css("opacity", "0");
+    });
+    
+    $('.checkAllButton').click(function(){
+        $(this).find('span').toggleClass('ion-android-radio-button-off ion-android-checkmark-circle');
     });
 });
