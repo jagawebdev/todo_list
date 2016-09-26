@@ -15,7 +15,7 @@ body {
 button {
     border: none;
     background-color: white;
-    color: $light-pink;
+    color: rgba(196,131,152,0.8);
     font-size: 20px;
     outline: none;
 }
@@ -56,7 +56,7 @@ h1 {
     font-size: 100px;
     line-height: 0px;
     text-align: center;
-    color: rgba(110,189,209,0.3);
+    color: rgba(196,131,152,0.3);
     font-weight: 100;
 }
 
@@ -138,5 +138,19 @@ input {
     padding: 10px 15px 0 15px;
     .numberUpdate {
         font-size: 16px;
+    }
+}
+
+.footer {
+    color: rgba(0,0,0,0.3);
+    font-size: 14px;
+    text-align: center;
+    margin-top: 60px;
+    a{
+        color: rgba(0,0,0,0.6);
+        text-decoration: none;
+        &:hover{
+            color: rgba(0,0,0,1);
+        }
     }
 }
