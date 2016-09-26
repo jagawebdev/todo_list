@@ -84,13 +84,13 @@ var view = {
         
         todoList.todos.forEach(function(todo, index){
             var todoLi = document.createElement("li");
-            todoLi.setAttribute("class", 'todoLi')
+            todoLi.setAttribute("class", 'todoLi');
             var todoTextWithCompletion = "";
             
             if(todo.completed === true){
                 todoTextWithCompletion = todo.todoText;
                 todoLi.style.textDecoration = 'line-through';
-                todoLi.style.color = '#a4a9aa';
+                todoLi.style.color = '#c0c1c1';
             }else{
                 todoTextWithCompletion = todo.todoText;
             } 
@@ -105,7 +105,7 @@ var view = {
         
         
     },
-    
+
     createDeleteButton: function(){
         var deleteButton = document.createElement("button");
         deleteButton.textContent = "";
@@ -189,5 +189,19 @@ $(document).ready(function(){
     
     $('.checkAllButton').click(function(){
         $(this).find('span').toggleClass('ion-android-radio-button-off ion-android-checkmark-circle');
+    });
+    
+    
+    
+    
+    $("ul, button").click(function(){
+        var notDone = 0;
+            todoList.todos.forEach(function(todo){
+                if(todo.completed === false){
+                     notDone++;
+                }
+            });
+            //return done;
+            $(".numberUpdate").text(notDone);
     });
 });

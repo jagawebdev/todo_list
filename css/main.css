@@ -464,13 +464,15 @@ input {
   padding: 0; }
   #todoUl .todoLi {
     margin: 10px 6px; }
-  #todoUl .ion-android-checkmark-circle,
-  #todoUl .ion-android-radio-button-off {
-    float: left;
-    font-size: 24px;
-    padding: 0 10px; }
 
 .change {
   background-color: green; }
+
+.done {
+  color: rgba(0, 0, 0, 0.7);
+  font-size: 14px;
+  padding: 10px 15px 0 15px; }
+  .done .numberUpdate {
+    font-size: 16px; }
 
 /*# sourceMappingURL=main.css.map */
